@@ -3,23 +3,29 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { toast } from "react-hot-toast";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function ProfilePage() {
 
     const router = useRouter()
     const [data, setData] = useState({
-        username: 'Abdullah',
-        email: 'test@gmail.com',
+        username: '',
+        email: '',
     });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('/api/currentUser');
-                setData(response.data);
+                const response = await axios.get('/api/users/currentUser');
+                setData(response.data.data);
+                console.log(response);
+                if(response.data.success === false) {
+                    router.push('/login')
+                }
+                
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);

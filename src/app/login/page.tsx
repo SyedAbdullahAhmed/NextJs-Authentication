@@ -3,7 +3,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { toast } from "react-hot-toast";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function LoginPage() {
@@ -56,7 +57,8 @@ export default function LoginPage() {
                 className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
                 id="email"
                 type="text"
-                value={user.email}
+                name="email"
+                value={user?.email}
                 onChange={handleChange}
                 placeholder="email"
             />
@@ -65,13 +67,14 @@ export default function LoginPage() {
                 className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
                 id="password"
                 type="password"
-                value={user.password}
+                name="password"
+                value={user?.password}
                 onChange={handleChange}
                 placeholder="password"
             />
             <button
                 onClick={onLogin}
-                className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">{buttonDisabled ? "Login here" : "No Login"}</button>
+                className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">{buttonDisabled ? "No Login" : "Login here"}</button>
             <Link href="/signup">Visit Signup page</Link>
         </div>
     )

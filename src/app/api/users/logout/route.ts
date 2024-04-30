@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextResponse,NextRequest } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
         const response = NextResponse.json(
             {
@@ -10,10 +10,13 @@ export async function GET() {
                 status: 200
             }
         )
+        console.log(request.cookies.get('token'));
+        
         response.cookies.set("token", "",
-            {
-                httpOnly: true, expires: new Date(0)
-            });
+        {
+            httpOnly: true, expires: new Date(0)
+        });
+        console.log(request.cookies.get('token'));
         return response;
     } catch (error: any) {
         return NextResponse.json(

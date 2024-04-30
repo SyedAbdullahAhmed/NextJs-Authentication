@@ -6,11 +6,12 @@ import { connect } from "@/dbConfig/dbConfig"
 
 connect()
 interface JwtPayload {
-    _id: string
+    id: string
 }
 export async function GET(request: NextRequest, response: NextResponse) {
     try {
         const token = request.cookies.get('token')?.value || '';
+        
         if (!token) {
             return NextResponse.json(
                 {
@@ -21,8 +22,9 @@ export async function GET(request: NextRequest, response: NextResponse) {
                 }
             );
         }
-        const { _id } = jwt.verify(token, process.env.TOKEN_SECRET!) as JwtPayload;
-        const user = await User.findOne({ _id }).select('-password');
+        const { id } = jwt.verify(token, process.env.TOKEN_SECRET!) as JwtPayload ;
+        
+        const user = await User.findOne({ _id: id }).select('-password -isVerified -isAdmin');
 
         if (!user) {
             return NextResponse.json(
