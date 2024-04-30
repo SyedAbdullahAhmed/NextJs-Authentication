@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignupPage() {
 
-
     const router = useRouter();
     const [user, setUser] = useState({
         email: "",
@@ -27,15 +26,21 @@ export default function SignupPage() {
 
     const onSignup = async () => {
         try {
+            if(user.password.length < 8) {
+                alert("Password must have 8 letters")
+                return
+            }
             setLoading(true);
             const response = await axios.post("/api/users/signup", user);
-            console.log("Signup success", response.data);
-            console.log(user);
-            toast("Login success");
+            alert(response.data.message)
+            console.log(response);
+            if(!response.data.success) {
+                return
+            }
             router.push("/login");
+            
         } catch (error: any) {
             console.log("Signup failed", error.message);
-            toast.error(error.message);
         } finally {
             setLoading(false);
         }
@@ -54,16 +59,16 @@ export default function SignupPage() {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2">
             <h1 className="text-2xl font-bold mb-4">{loading ? "Processing" : "Signup"}</h1>
-            <hr className="w-full border-b-2 border-gray-300 mb-4" />
             <label htmlFor="username" className="text-gray-800">Username</label>
             <input
-                className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-gray-800"
+                className="text-left p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-gray-800"
                 id="username"
                 type="text"
                 name="username"
                 value={user.username}
                 onChange={handleChange}
                 placeholder="Username"
+                required
             />
             <label htmlFor="email" className="text-gray-800">Email</label>
             <input
@@ -74,6 +79,7 @@ export default function SignupPage() {
                 value={user.email}
                 onChange={handleChange}
                 placeholder="Email"
+                required
             />
             <label htmlFor="password" className="text-gray-800">Password</label>
             <input
@@ -84,10 +90,11 @@ export default function SignupPage() {
                 value={user.password}
                 onChange={handleChange}
                 placeholder="Password"
+                required
             />
             <button
                 onClick={onSignup}
-                className={`p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 ${buttonDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}
+                className={`p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 ${buttonDisabled ? 'bg-blue-500 hover:bg-blue-600 text-white  cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}
                 disabled={buttonDisabled}
             >
                 {buttonDisabled ? "No signup" : "Signup"}

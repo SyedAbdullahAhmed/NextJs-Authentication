@@ -8,10 +8,11 @@ connect()
 
 export async function POST(request: NextRequest) {
     try {
+        // get data
         const data = await request.json();
-        console.log(data);
         const { email, username, password } = data
 
+        // validate data
         if (!email || !username || !password) {
             return NextResponse.json(
                 {
@@ -23,7 +24,8 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const user = await User.findOne({ email })
+        // find in database
+        const user = await User.findOne({ email }).select("-password -isVerified -isAdmin")
         if (user) {
             return NextResponse.json(
                 {
@@ -35,8 +37,10 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // hash password
         const hashedPassword = await bcrypt.hash(password, 10)
 
+        // create user
         const savedUser = await User.create({
             email, username, password: hashedPassword
         })

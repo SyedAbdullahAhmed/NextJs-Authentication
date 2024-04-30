@@ -2,6 +2,7 @@ import { NextResponse,NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
     try {
+        // create response
         const response = NextResponse.json(
             {
                 success: true,
@@ -10,13 +11,14 @@ export async function GET(request: NextRequest) {
                 status: 200
             }
         )
-        console.log(request.cookies.get('token'));
         
+        // remove token from cookies
         response.cookies.set("token", "",
         {
             httpOnly: true, expires: new Date(0)
         });
-        console.log(request.cookies.get('token'));
+
+        
         return response;
     } catch (error: any) {
         return NextResponse.json(

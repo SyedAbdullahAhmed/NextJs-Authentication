@@ -10,6 +10,7 @@ interface JwtPayload {
 }
 export async function GET(request: NextRequest, response: NextResponse) {
     try {
+        // get token from cookies
         const token = request.cookies.get('token')?.value || '';
         
         if (!token) {
@@ -22,8 +23,11 @@ export async function GET(request: NextRequest, response: NextResponse) {
                 }
             );
         }
+
+        // get id from token
         const { id } = jwt.verify(token, process.env.TOKEN_SECRET!) as JwtPayload ;
         
+        // find user
         const user = await User.findOne({ _id: id }).select('-password -isVerified -isAdmin');
 
         if (!user) {

@@ -10,16 +10,18 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function ProfilePage() {
 
     const router = useRouter()
+    const [loading, setLoading] = useState(true);
     const [data, setData] = useState({
         username: '',
         email: '',
     });
-    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('/api/users/currentUser');
+                alert(response.data.message)
                 setData(response.data.data);
                 console.log(response);
                 if(response.data.success === false) {
@@ -36,16 +38,19 @@ export default function ProfilePage() {
         fetchData();
     }, []);
 
+
     const onLogout = async() => {
         try {
-            await axios.get('/api/users/logout')
-            toast.success('Logout successful')
+            const response = await axios.get('/api/users/logout')
+            alert(response.data.message)
             router.push('/login')
         } catch (error:any) {
             console.log(error.message);
             toast.error(error.message)
         }
     }
+
+
     return (
         <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-semibold mb-4">Profile</h1>
