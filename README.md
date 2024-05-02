@@ -11,4 +11,6 @@ This is a Next Auth app.
 - **Upload images and videos on cloudinary:** Integrates with Cloudinary for image and video uploads.
 - **Create playlist:** Allows users to create playlists.
 
+## Model Diagram Link
 
+- **https://app.eraser.io/workspace/YtPqZ1VogxGy1jzIDkzj**
